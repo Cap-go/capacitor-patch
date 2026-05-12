@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import test from 'node:test';
 
 import { getPluginConfig } from './capacitor-patch/config.mjs';
+import { applyUnifiedDiff } from './capacitor-patch/diff.mjs';
 import { runCapacitorPatch, selectPatches } from './capacitor-patch/runner.mjs';
 
 test('default config selects no patches', () => {
@@ -80,6 +81,42 @@ test('version gating skips incompatible recommended patches', async () => {
 
   assert.equal(result.results[0].status, 'skipped');
   assert.match(result.results[0].reason, /does not satisfy/);
+});
+
+test('patch hunks can apply when the expected block moved uniquely', async () => {
+  const fixture = createPackageFixture({ content: 'zero\none\nold\n' });
+  const result = await runCapacitorPatch({
+    rootDir: fixture.rootDir,
+    patchBaseDir: fixture.patchBaseDir,
+    catalog: fixture.catalog,
+    phase: 'package',
+    extConfig: { plugins: { CapacitorPatch: { recommended: true } } },
+  });
+
+  assert.equal(result.results[0].status, 'applied');
+  assert.equal(fs.readFileSync(fixture.targetFile, 'utf8'), 'zero\none\nnew\n');
+});
+
+test('unified diff parser accepts standard multi-file git patches', () => {
+  const rootDir = createTempDir();
+  fs.writeFileSync(path.join(rootDir, 'one.txt'), 'one\nold\n');
+  fs.writeFileSync(path.join(rootDir, 'two.txt'), 'two\nold\n');
+
+  const result = applyUnifiedDiff(
+    rootDir,
+    `${makeDiff('one.txt', 'old', 'new')}diff --git a/two.txt b/two.txt
+--- a/two.txt
++++ b/two.txt
+@@ -1,2 +1,2 @@
+ two
+-old
++new
+`,
+  );
+
+  assert.deepEqual(result.changedFiles, ['one.txt', 'two.txt']);
+  assert.equal(fs.readFileSync(path.join(rootDir, 'one.txt'), 'utf8'), 'one\nnew\n');
+  assert.equal(fs.readFileSync(path.join(rootDir, 'two.txt'), 'utf8'), 'two\nnew\n');
 });
 
 test('native patches respect platform filters', async () => {

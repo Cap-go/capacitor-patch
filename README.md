@@ -130,6 +130,12 @@ Catalog entries use this shape:
 
 For generated native project files, use `"phase": "native"` and `"target": { "type": "native" }`. Diff paths are relative to the app root. For package patches, diff paths are relative to the target package root.
 
+### Built-in patches
+
+| ID                                     | Source                                                             | Target              | Description                                                                                         |
+| -------------------------------------- | ------------------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------- |
+| `capacitor-cli-spm-ios-minor-platform` | [Capacitor+ #38](https://github.com/Cap-go/capacitor-plus/pull/38) | `@capacitor/cli` v8 | Keeps iOS SPM `Package.swift` generation from truncating deployment targets such as `15.5` to `15`. |
+
 ## Compatibility
 
 | Plugin version | Capacitor compatibility | Maintained |

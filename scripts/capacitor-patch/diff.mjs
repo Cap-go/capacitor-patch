@@ -76,7 +76,7 @@ export function parseUnifiedDiff(diffText) {
     index += 1;
     const hunks = [];
 
-    while (index < lines.length && !lines[index].startsWith('--- ')) {
+    while (index < lines.length && !lines[index].startsWith('--- ') && !lines[index].startsWith('diff --git ')) {
       if (!lines[index].startsWith('@@ ')) {
         index += 1;
         continue;
@@ -89,7 +89,12 @@ export function parseUnifiedDiff(diffText) {
 
       index += 1;
       const hunkLines = [];
-      while (index < lines.length && !lines[index].startsWith('@@ ') && !lines[index].startsWith('--- ')) {
+      while (
+        index < lines.length &&
+        !lines[index].startsWith('@@ ') &&
+        !lines[index].startsWith('--- ') &&
+        !lines[index].startsWith('diff --git ')
+      ) {
         if (lines[index].startsWith('\\')) {
           index += 1;
           continue;
@@ -152,11 +157,12 @@ function applyHunks(content, hunks, reverse, relativePath) {
       }
     }
 
-    const start = Math.max(0, (reverse ? hunk.newStart : hunk.oldStart) - 1 + offset);
-    if (!matchesAt(lines, start, expected)) {
-      throw new PatchApplyError(`Patch hunk does not match ${relativePath} at line ${start + 1}.`, {
+    const preferredStart = Math.max(0, (reverse ? hunk.newStart : hunk.oldStart) - 1 + offset);
+    const start = resolveHunkStart(lines, preferredStart, expected, relativePath);
+    if (start === -1) {
+      throw new PatchApplyError(`Patch hunk does not match ${relativePath} at line ${preferredStart + 1}.`, {
         file: relativePath,
-        line: start + 1,
+        line: preferredStart + 1,
       });
     }
 
@@ -206,6 +212,31 @@ function matchesAt(lines, start, expected) {
   }
 
   return expected.every((line, index) => lines[start + index] === line);
+}
+
+function resolveHunkStart(lines, preferredStart, expected, relativePath) {
+  if (matchesAt(lines, preferredStart, expected)) {
+    return preferredStart;
+  }
+
+  const matches = [];
+  for (let index = 0; index <= lines.length - expected.length; index += 1) {
+    if (index !== preferredStart && matchesAt(lines, index, expected)) {
+      matches.push(index);
+    }
+  }
+
+  if (matches.length === 1) {
+    return matches[0];
+  }
+
+  if (matches.length > 1) {
+    throw new PatchApplyError(`Patch hunk matches multiple locations in ${relativePath}.`, {
+      file: relativePath,
+    });
+  }
+
+  return -1;
 }
 
 function assertInsideRoot(rootDir, absolutePath) {
