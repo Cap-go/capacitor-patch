@@ -1,0 +1,13 @@
+diff --git a/Capacitor/Capacitor/Router.swift b/Capacitor/Capacitor/Router.swift
+index 68328f8c..8d5b4372 100644
+--- a/Capacitor/Capacitor/Router.swift
++++ b/Capacitor/Capacitor/Router.swift
+@@ -17,7 +17,7 @@ public struct CapacitorRouter: Router {
+     public init() {}
+     public var basePath: String = ""
+     public func route(for path: String) -> String {
+-        let pathUrl = URL(fileURLWithPath: path)
++        let pathUrl = URL(fileURLWithPath: basePath + path)
+ 
+         // If there's no path extension it also means the path is empty or a SPA route
+         if pathUrl.pathExtension.isEmpty {

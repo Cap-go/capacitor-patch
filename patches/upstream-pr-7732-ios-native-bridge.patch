@@ -1,0 +1,12 @@
+diff --git a/Capacitor/Capacitor/assets/native-bridge.js b/Capacitor/Capacitor/assets/native-bridge.js
+index f5e7cc4..2cc3db4 100644
+--- a/Capacitor/Capacitor/assets/native-bridge.js
++++ b/Capacitor/Capacitor/assets/native-bridge.js
+@@ -782,6 +782,7 @@ var nativeBridge = (function (exports) {
+                         Object.setPrototypeOf(xhr, prototype);
+                         return xhr;
+                     };
++                    window.XMLHttpRequest.prototype = win.CapacitorWebXMLHttpRequest.prototype;
+                     Object.assign(window.XMLHttpRequest, win.CapacitorWebXMLHttpRequest.fullObject);
+                 }
+             }

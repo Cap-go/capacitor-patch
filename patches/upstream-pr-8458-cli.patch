@@ -1,0 +1,14 @@
+diff --git a/dist/ios/build.js b/dist/ios/build.js
+index 249518e..c293d47 100644
+--- a/dist/ios/build.js
++++ b/dist/ios/build.js
+@@ -44,6 +44,9 @@ async function buildiOS(config, buildOptions) {
+     if (buildOptions.xcodeSigningType == 'manual') {
+         buildArgs.push(`PROVISIONING_PROFILE_SPECIFIER=${buildOptions.xcodeProvisioningProfile}`);
+     }
++    else {
++        buildArgs.push('-allowProvisioningUpdates');
++    }
+     await (0, common_1.runTask)('Building xArchive', async () => (0, subprocess_1.runCommand)('xcodebuild', buildArgs, {
+         cwd: config.ios.nativeProjectDirAbs,
+     }));

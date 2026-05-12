@@ -28,6 +28,18 @@ export async function runCapacitorPatch(options) {
     });
   }
 
+  for (const entry of selected.superseded) {
+    results.push({
+      id: entry.patch.id,
+      title: entry.patch.title,
+      phase,
+      selectedBy: entry.selectedBy,
+      status: 'skipped',
+      changedFiles: [],
+      reason: `Superseded by ${entry.supersededBy}.`,
+    });
+  }
+
   for (const entry of selected.patches) {
     results.push(
       await applyCatalogPatch({
@@ -50,7 +62,7 @@ export async function runCapacitorPatch(options) {
 
   return {
     phase,
-    selectedCount: selected.patches.length + selected.unknownIds.length,
+    selectedCount: selected.patches.length + selected.unknownIds.length + selected.superseded.length,
     results,
   };
 }
@@ -59,7 +71,7 @@ export function selectPatches(catalog, patchConfig, phase) {
   const disabled = new Set(patchConfig.disabled);
   const explicit = new Set(patchConfig.patches);
   const catalogById = new Map(catalog.map((patch) => [patch.id, patch]));
-  const patches = [];
+  const selectedEntries = [];
 
   for (const patch of catalog) {
     if (!patch?.id || patch.phase !== phase || disabled.has(patch.id)) {
@@ -67,14 +79,36 @@ export function selectPatches(catalog, patchConfig, phase) {
     }
 
     if (explicit.has(patch.id)) {
-      patches.push({ patch, selectedBy: 'explicit' });
+      selectedEntries.push({ patch, selectedBy: 'explicit' });
     } else if (patchConfig.recommended && patch.recommended === true) {
-      patches.push({ patch, selectedBy: 'recommended' });
+      selectedEntries.push({ patch, selectedBy: 'recommended' });
+    }
+  }
+
+  const selectedIds = new Set(selectedEntries.map((entry) => entry.patch.id));
+  const supersededBy = new Map();
+  for (const entry of selectedEntries) {
+    for (const supersededId of entry.patch.supersedes ?? []) {
+      if (selectedIds.has(supersededId) && !disabled.has(supersededId)) {
+        supersededBy.set(supersededId, entry.patch.id);
+      }
+    }
+  }
+
+  const patches = [];
+  const superseded = [];
+  for (const entry of selectedEntries) {
+    const replacementId = supersededBy.get(entry.patch.id);
+    if (replacementId) {
+      superseded.push({ ...entry, supersededBy: replacementId });
+    } else {
+      patches.push(entry);
     }
   }
 
   return {
     patches,
+    superseded,
     unknownIds: patchConfig.patches.filter((id) => !disabled.has(id) && !catalogById.has(id)),
   };
 }

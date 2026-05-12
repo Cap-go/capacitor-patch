@@ -1,0 +1,13 @@
+diff --git a/Capacitor/Capacitor/WebViewDelegationHandler.swift b/Capacitor/Capacitor/WebViewDelegationHandler.swift
+index 2b4a256d..bbdf0db9 100644
+--- a/Capacitor/Capacitor/WebViewDelegationHandler.swift
++++ b/Capacitor/Capacitor/WebViewDelegationHandler.swift
+@@ -213,7 +213,7 @@ open class WebViewDelegationHandler: NSObject, WKNavigationDelegate, WKUIDelegat
+                 let method = dict["action"] as? String ?? ""
+                 let callbackId = dict["callbackId"] as? String ?? ""
+ 
+-                let args = dict["actionArgs"] as? Array ?? []
++                let args = dict["actionArgs"] as? Array ?? [] as [String]
+                 let options = ["options": args]
+ 
+                 CAPLog.print("To Native Cordova -> ", pluginId, method, callbackId, options)

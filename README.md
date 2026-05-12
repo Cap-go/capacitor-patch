@@ -33,9 +33,13 @@ npm install @capgo/capacitor-patch
 npx cap sync
 ```
 
-## Enable Recommended Patches
+## Enable Patches
 
-`@capgo/capacitor-patch` is a no-op by default. Enable Capgo-recommended patches in your Capacitor config:
+`@capgo/capacitor-patch` is a no-op by default. List the bundled fixes, then opt in to the patch IDs your app needs:
+
+```bash
+npx capgo-capacitor-patch list --all
+```
 
 ```ts
 import type { CapacitorConfig } from '@capacitor/cli';
@@ -46,7 +50,8 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   plugins: {
     CapacitorPatch: {
-      recommended: true,
+      patches: ['upstream-pr-8418-android'],
+      strict: true,
     },
   },
 };
@@ -61,6 +66,8 @@ npx cap sync
 ```
 
 Package patches run before `sync` and `update`. Native project patches run after `sync` and `update`.
+
+`recommended: true` is also supported for fixes Capgo marks as recommended in the catalog.
 
 ## Configuration
 
@@ -132,9 +139,9 @@ For generated native project files, use `"phase": "native"` and `"target": { "ty
 
 ### Built-in patches
 
-| ID                                     | Source                                                             | Target              | Description                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------------- |
-| `capacitor-cli-spm-ios-minor-platform` | [Capacitor+ #38](https://github.com/Cap-go/capacitor-plus/pull/38) | `@capacitor/cli` v8 | Keeps iOS SPM `Package.swift` generation from truncating deployment targets such as `15.5` to `15`. |
+The bundled catalog tracks external fix PRs mirrored by Capacitor+ auto-sync branches named `sync/upstream-pr-*`. These entries are explicit opt-in patches by default, so apps can choose the fixes they need without receiving every pending upstream change automatically.
+
+Run `capgo-capacitor-patch list --all` to see the shipped catalog. Each entry includes the original upstream Capacitor PR URL, the Capacitor+ sync branch, target package, supported version range, and patch file.
 
 ## Compatibility
 

@@ -1,0 +1,30 @@
+diff --git a/dist/index.cjs.js b/dist/index.cjs.js
+index e48348e..12237d0 100644
+--- a/dist/index.cjs.js
++++ b/dist/index.cjs.js
+@@ -288,7 +288,9 @@ class WebPlugin {
+             return;
+         }
+         const index = listeners.indexOf(listenerFunc);
+-        this.listeners[eventName].splice(index, 1);
++        if (index !== -1) {
++            this.listeners[eventName].splice(index, 1);
++        }
+         // If there are no more listeners for this type of event,
+         // remove the window listener
+         if (!this.listeners[eventName].length) {
+diff --git a/dist/index.js b/dist/index.js
+index 2509854..d4532a5 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -284,7 +284,9 @@ class WebPlugin {
+             return;
+         }
+         const index = listeners.indexOf(listenerFunc);
+-        this.listeners[eventName].splice(index, 1);
++        if (index !== -1) {
++            this.listeners[eventName].splice(index, 1);
++        }
+         // If there are no more listeners for this type of event,
+         // remove the window listener
+         if (!this.listeners[eventName].length) {

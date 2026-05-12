@@ -1,0 +1,31 @@
+diff --git a/dist/ios/update.js b/dist/ios/update.js
+index 54456cd..5fb1920 100644
+--- a/dist/ios/update.js
++++ b/dist/ios/update.js
+@@ -55,9 +55,9 @@ async function updatePluginFiles(config, plugins, deployment) {
+     (0, plugin_1.printPlugins)(incompatibleCordovaPlugins, platform, 'incompatible');
+ }
+ async function generateCordovaPackageFiles(cordovaPlugins, config) {
+-    cordovaPlugins.map((plugin) => {
+-        generateCordovaPackageFile(plugin, config);
+-    });
++    await Promise.all(cordovaPlugins.map(async (plugin) => {
++        await generateCordovaPackageFile(plugin, config);
++    }));
+ }
+ async function generateCordovaPackageFile(p, config) {
+     var _a;
+diff --git a/dist/tasks/update.js b/dist/tasks/update.js
+index 3aeb45b..04f66b6 100644
+--- a/dist/tasks/update.js
++++ b/dist/tasks/update.js
+@@ -69,7 +69,8 @@ function updateChecks(config, platforms) {
+     const checks = [];
+     for (const platformName of platforms) {
+         if (platformName === config.ios.name) {
+-            checks.push(() => (0, common_2.checkBundler)(config) || (0, common_2.checkCocoaPods)(config));
++            checks.push(() => (0, common_2.checkBundler)(config));
++            checks.push(() => (0, common_2.checkCocoaPods)(config));
+         }
+         else if (platformName === config.android.name) {
+             continue;

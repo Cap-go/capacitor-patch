@@ -1,0 +1,15 @@
+diff --git a/capacitor/src/main/assets/native-bridge.js b/capacitor/src/main/assets/native-bridge.js
+index f5e7cc4..1463c68 100644
+--- a/capacitor/src/main/assets/native-bridge.js
++++ b/capacitor/src/main/assets/native-bridge.js
+@@ -689,8 +689,8 @@ var nativeBridge = (function (exports) {
+                                             if (isProgressEventAvailable()) {
+                                                 this.dispatchEvent(new ProgressEvent('progress', {
+                                                     lengthComputable: true,
+-                                                    loaded: nativeResponse.data.length,
+-                                                    total: nativeResponse.data.length,
++                                                    loaded: nativeResponse.data == null ? 0 : nativeResponse.data.length,
++                                                    total: nativeResponse.data == null ? 0 : nativeResponse.data.length,
+                                                 }));
+                                             }
+                                             this._headers = nativeResponse.headers;

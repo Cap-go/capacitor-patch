@@ -1,0 +1,32 @@
+diff --git a/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift b/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift
+index 782c245b..b5ab0cf6 100644
+--- a/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift
++++ b/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift
+@@ -46,14 +46,6 @@ public class CapacitorCookieManager {
+         return url
+     }
+ 
+-    public func encode(_ value: String) -> String {
+-        return value.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+-    }
+-
+-    public func decode(_ value: String) -> String {
+-        return value.removingPercentEncoding!
+-    }
+-
+     public func setCookie(_ domain: String, _ action: String) {
+         let url = getServerUrl(domain)!
+         let jar = HTTPCookieStorage.shared
+diff --git a/Capacitor/Capacitor/Plugins/CapacitorCookies.swift b/Capacitor/Capacitor/Plugins/CapacitorCookies.swift
+index 8d5efd3a..75ac0092 100644
+--- a/Capacitor/Capacitor/Plugins/CapacitorCookies.swift
++++ b/Capacitor/Capacitor/Plugins/CapacitorCookies.swift
+@@ -31,7 +31,7 @@ public class CAPCookiesPlugin: CAPPlugin, CAPBridgedPlugin {
+ 
+         let expires = call.getString("expires", "")
+         let path = call.getString("path", "")
+-        cookieManager!.setCookie(url, key, cookieManager!.encode(value), expires, path)
++        cookieManager!.setCookie(url, key, value, expires, path)
+         call.resolve()
+     }
+ 

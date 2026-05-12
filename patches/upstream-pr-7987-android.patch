@@ -1,0 +1,42 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/BridgeWebViewClient.java b/capacitor/src/main/java/com/getcapacitor/BridgeWebViewClient.java
+index c434247a27..24149aac1a 100644
+--- a/capacitor/src/main/java/com/getcapacitor/BridgeWebViewClient.java
++++ b/capacitor/src/main/java/com/getcapacitor/BridgeWebViewClient.java
+@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest;
+ import android.webkit.WebResourceResponse;
+ import android.webkit.WebView;
+ import android.webkit.WebViewClient;
++import android.widget.Toast;
+ import java.util.List;
+ 
+ public class BridgeWebViewClient extends WebViewClient {
+@@ -91,16 +92,29 @@ public class BridgeWebViewClient extends WebViewClient {
+     @Override
+     public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+         super.onRenderProcessGone(view, detail);
++
+         boolean result = false;
+ 
+         List<WebViewListener> webViewListeners = bridge.getWebViewListeners();
+         if (webViewListeners != null) {
+             for (WebViewListener listener : bridge.getWebViewListeners()) {
+                 result = listener.onRenderProcessGone(view, detail) || result;
+             }
+         }
+ 
++        if (!result) {
++            // If no one handled it, handle it ourselves!
++
++            view.post(() -> {
++                Toast.makeText(view.getContext(), "Reloading due to low memory issue", Toast.LENGTH_SHORT).show();
++            });
++
++            view.reload(); // Safely reload WebView
++
++            return true;
++        }
++
+         return result;
+     }
+ 
+     @Override

@@ -1,0 +1,86 @@
+diff --git a/Capacitor/Capacitor/CAPBridgeViewController.swift b/Capacitor/Capacitor/CAPBridgeViewController.swift
+index a7285213..5f70bc68 100644
+--- a/Capacitor/Capacitor/CAPBridgeViewController.swift
++++ b/Capacitor/Capacitor/CAPBridgeViewController.swift
+@@ -301,6 +301,7 @@ extension CAPBridgeViewController {
+         aWebView.scrollView.bounces = false
+         aWebView.scrollView.contentInsetAdjustmentBehavior = configuration.contentInsetAdjustmentBehavior
+         aWebView.allowsLinkPreview = configuration.allowLinkPreviews
++        aWebView.allowsBackForwardNavigationGestures = configuration.allowsBackForwardNavigationGestures
+         aWebView.scrollView.isScrollEnabled = configuration.scrollingEnabled
+         if let overrideUserAgent = configuration.overridenUserAgentString {
+             aWebView.customUserAgent = overrideUserAgent
+diff --git a/Capacitor/Capacitor/CAPInstanceConfiguration.h b/Capacitor/Capacitor/CAPInstanceConfiguration.h
+index 171dbb46..4177e542 100644
+--- a/Capacitor/Capacitor/CAPInstanceConfiguration.h
++++ b/Capacitor/Capacitor/CAPInstanceConfiguration.h
+@@ -19,6 +19,7 @@ NS_SWIFT_NAME(InstanceConfiguration)
+ @property (nonatomic, readonly) BOOL scrollingEnabled;
+ @property (nonatomic, readonly) BOOL zoomingEnabled;
+ @property (nonatomic, readonly) BOOL allowLinkPreviews;
++@property (nonatomic, readonly) BOOL allowsBackForwardNavigationGestures;
+ @property (nonatomic, readonly) BOOL handleApplicationNotifications;
+ @property (nonatomic, readonly) BOOL isWebDebuggable;
+ @property (nonatomic, readonly) BOOL hasInitialFocus;
+diff --git a/Capacitor/Capacitor/CAPInstanceConfiguration.m b/Capacitor/Capacitor/CAPInstanceConfiguration.m
+index d6b7785e..e22a89f4 100644
+--- a/Capacitor/Capacitor/CAPInstanceConfiguration.m
++++ b/Capacitor/Capacitor/CAPInstanceConfiguration.m
+@@ -31,6 +31,7 @@ - (instancetype)initWithDescriptor:(CAPInstanceDescriptor *)descriptor isDebug:(
+         _scrollingEnabled = descriptor.scrollingEnabled;
+         _zoomingEnabled =  descriptor.zoomingEnabled;
+         _allowLinkPreviews = descriptor.allowLinkPreviews;
++        _allowsBackForwardNavigationGestures = descriptor.allowsBackForwardNavigationGestures;
+         _handleApplicationNotifications = descriptor.handleApplicationNotifications;
+         _contentInsetAdjustmentBehavior = descriptor.contentInsetAdjustmentBehavior;
+         _appLocation = descriptor.appLocation;
+@@ -70,6 +71,7 @@ - (instancetype)initWithConfiguration:(CAPInstanceConfiguration*)configuration a
+         _scrollingEnabled = configuration.scrollingEnabled;
+         _zoomingEnabled = configuration.zoomingEnabled;
+         _allowLinkPreviews = configuration.allowLinkPreviews;
++        _allowsBackForwardNavigationGestures = configuration.allowsBackForwardNavigationGestures;
+         _handleApplicationNotifications = configuration.handleApplicationNotifications;
+         _isWebDebuggable = configuration.isWebDebuggable;
+         _hasInitialFocus = configuration.hasInitialFocus;
+diff --git a/Capacitor/Capacitor/CAPInstanceDescriptor.h b/Capacitor/Capacitor/CAPInstanceDescriptor.h
+index f477ef55..aa2b3c23 100644
+--- a/Capacitor/Capacitor/CAPInstanceDescriptor.h
++++ b/Capacitor/Capacitor/CAPInstanceDescriptor.h
+@@ -93,6 +93,11 @@ NS_SWIFT_NAME(InstanceDescriptor)
+  @discussion Set by @c ios.allowsLinkPreview in the configuration file. Corresponds to @c allowsLinkPreview on WKWebView.
+  */
+ @property (nonatomic, assign) BOOL allowLinkPreviews;
++/**
++ @brief Whether or not the web view will allow gesture navigation .
++ @discussion Set by @c ios.allowsBackForwardNavigationGestures in the configuration file. Corresponds to @c allowsBackForwardNavigationGestures on WKWebView.
++ */
++@property (nonatomic, assign) BOOL allowsBackForwardNavigationGestures;
+ /**
+  @brief Whether or not the Capacitor runtime will set itself as the @c UNUserNotificationCenter delegate.
+  @discussion Defaults to @c true. Required to be @c true for notification plugins to work correctly. Set to @c false if your application will handle notifications independently.
+diff --git a/Capacitor/Capacitor/CAPInstanceDescriptor.m b/Capacitor/Capacitor/CAPInstanceDescriptor.m
+index 2d7a4fba..fe8f08c8 100644
+--- a/Capacitor/Capacitor/CAPInstanceDescriptor.m
++++ b/Capacitor/Capacitor/CAPInstanceDescriptor.m
+@@ -39,6 +39,7 @@ - (void)_setDefaultsWithAppLocation:(NSURL*)location {
+     _scrollingEnabled = YES;
+     _zoomingEnabled = NO;
+     _allowLinkPreviews = YES;
++    _allowsBackForwardNavigationGestures = NO;
+     _handleApplicationNotifications = YES;
+     _isWebDebuggable = NO;
+     _hasInitialFocus = YES;
+diff --git a/Capacitor/Capacitor/CAPInstanceDescriptor.swift b/Capacitor/Capacitor/CAPInstanceDescriptor.swift
+index a7eff5f6..0958e3c2 100644
+--- a/Capacitor/Capacitor/CAPInstanceDescriptor.swift
++++ b/Capacitor/Capacitor/CAPInstanceDescriptor.swift
+@@ -111,6 +111,9 @@ internal extension InstanceDescriptor {
+             if let allowPreviews = config[keyPath: "ios.allowsLinkPreview"] as? Bool {
+                 allowLinkPreviews = allowPreviews
+             }
++            if let allowsNavigationGestures = config[keyPath: "ios.allowsBackForwardNavigationGestures"] as? Bool {
++                allowsBackForwardNavigationGestures = allowsNavigationGestures
++            }
+             if let scrollEnabled = config[keyPath: "ios.scrollEnabled"] as? Bool {
+                 scrollingEnabled = scrollEnabled
+             }

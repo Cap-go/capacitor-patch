@@ -1,8 +1,399 @@
 [
   {
-    "id": "capacitor-cli-spm-ios-minor-platform",
-    "title": "Generate SPM Package.swift with the full iOS deployment target",
-    "recommended": true,
+    "id": "upstream-pr-6991-android",
+    "title": "fix(http): dispatch progress event properly when the response body is null (android-native-bridge)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/6991",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-6991",
+      "author": "AndrWeisR",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-6991-android-native-bridge.patch"
+  },
+  {
+    "id": "upstream-pr-6991-ios",
+    "title": "fix(http): dispatch progress event properly when the response body is null (ios-native-bridge)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/6991",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-6991",
+      "author": "AndrWeisR",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-6991-ios-native-bridge.patch"
+  },
+  {
+    "id": "upstream-pr-7301-core",
+    "title": "Don't process response body for http status 204 (no content) (core)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/core",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7301",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7301",
+      "author": "jwltr",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7301-core.patch"
+  },
+  {
+    "id": "upstream-pr-7419-ios",
+    "title": "Update WebViewDelegationHandler.swift to prevent warning in Xcode (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7419",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7419",
+      "author": "neave",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7419-ios.patch"
+  },
+  {
+    "id": "upstream-pr-7420-ios",
+    "title": "Update CAPApplicationDelegateProxy.swift to prevent warning in Xcode (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7420",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7420",
+      "author": "neave",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7420-ios.patch"
+  },
+  {
+    "id": "upstream-pr-7446-android",
+    "title": "Fix initial scale of webview to 100% (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7446",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7446",
+      "author": "emilkoto",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7446-android.patch"
+  },
+  {
+    "id": "upstream-pr-7490-android",
+    "title": "fix: add default value for dataType (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7490",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7490",
+      "author": "RichardVsc",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7490-android.patch"
+  },
+  {
+    "id": "upstream-pr-7490-ios",
+    "title": "fix: add default value for dataType (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7490",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7490",
+      "author": "RichardVsc",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7490-ios.patch"
+  },
+  {
+    "id": "upstream-pr-7535-android",
+    "title": "Update WebColor.java to don't crash on empty string on colorString var (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7535",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7535",
+      "author": "aleixfargas",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7535-android.patch"
+  },
+  {
+    "id": "upstream-pr-7599-ios",
+    "title": "fix(ios): allow enabling gesture navigation via config (#3808) (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7599",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7599",
+      "author": "MegaMaddin",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7599-ios.patch"
+  },
+  {
+    "id": "upstream-pr-7732-android",
+    "title": "fix(core): add missing XMLHttpRequest.prototype (android-native-bridge)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7732",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7732",
+      "author": "CatsJuice",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7732-android-native-bridge.patch"
+  },
+  {
+    "id": "upstream-pr-7732-ios",
+    "title": "fix(core): add missing XMLHttpRequest.prototype (ios-native-bridge)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7732",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7732",
+      "author": "CatsJuice",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7732-ios-native-bridge.patch"
+  },
+  {
+    "id": "upstream-pr-7781-android",
+    "title": "Inject Capacitor JS for error fallbacks. (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7781",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7781",
+      "author": "cpojer",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7781-android.patch"
+  },
+  {
+    "id": "upstream-pr-7803-android",
+    "title": "fix(android): Subsequent build crash with missing version data (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <8.3.1"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7803",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7803",
+      "author": "aeharding",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7803-android.patch"
+  },
+  {
+    "id": "upstream-pr-7831-ios",
+    "title": "fix(ios): fix URL resolution when external frameworks are loaded (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7831",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7831",
+      "author": "daniellacosse",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7831-ios.patch"
+  },
+  {
+    "id": "upstream-pr-7987-android",
+    "title": "The app is crashed, if any low memory issue occured (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/7987",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-7987",
+      "author": "merbin2012",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-7987-android.patch"
+  },
+  {
+    "id": "upstream-pr-8087-android",
+    "title": "Use JSONTokener for application/json reponse parsing (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8087",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8087",
+      "author": "Crylion",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8087-android.patch"
+  },
+  {
+    "id": "upstream-pr-8188-cli",
+    "title": "Fix update failing because of xcodebuild clean error (cli)",
+    "recommended": false,
     "phase": "package",
     "target": {
       "type": "package",
@@ -10,14 +401,271 @@
       "versionRange": ">=8.0.0 <9.0.0"
     },
     "source": {
-      "capacitorPlusPr": "https://github.com/Cap-go/capacitor-plus/pull/38",
-      "author": "WcaleNieWolny",
-      "mergedAt": "2025-12-16T13:50:22Z"
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8188",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8188",
+      "author": "viteinfinite",
+      "authorAssociation": "external"
     },
     "upstream": {
-      "status": "not-merged-as-of-2026-05-12",
-      "officialRepository": "https://github.com/ionic-team/capacitor"
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
     },
-    "patchFile": "patches/capacitor-cli-spm-ios-minor-platform.patch"
+    "patchFile": "patches/upstream-pr-8188-cli.patch"
+  },
+  {
+    "id": "upstream-pr-8190-android",
+    "title": "fix(Android): range requests (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <8.2.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8190",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8190",
+      "author": "bolivir",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8190-android.patch"
+  },
+  {
+    "id": "upstream-pr-8249-ios",
+    "title": "fix(ios): remove percent-encoding of cookie values in CapacitorCookies (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8249",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8249",
+      "author": "michaelwolz",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8249-ios.patch"
+  },
+  {
+    "id": "upstream-pr-8252-cli",
+    "title": "Fix iOS CLI checks and Cordova Package.swift generation race (cli)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/cli",
+      "versionRange": ">=8.3.2 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8252",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8252",
+      "author": "MOHITKOURAV01",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8252-cli.patch"
+  },
+  {
+    "id": "upstream-pr-8271-core",
+    "title": "fix(core): prevent removeListener from removing wrong listener (core)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/core",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8271",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8271",
+      "author": "maniktyagi04",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8271-core.patch"
+  },
+  {
+    "id": "upstream-pr-8275-android",
+    "title": "fix(android): preserve file chooser callback across activity recreation (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8275",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8275",
+      "author": "Suryansh0910",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8275-android.patch"
+  },
+  {
+    "id": "upstream-pr-8304-ios",
+    "title": "fix(http): Fix throwing data URI requests on iOS (ios)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/ios",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8304",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8304",
+      "author": "frederikbosch",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "closed",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8304-ios.patch"
+  },
+  {
+    "id": "upstream-pr-8418-android",
+    "title": "fix(android): range request truncation (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.3.2 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8418",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8418",
+      "author": "bwees",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8418-android.patch"
+  },
+  {
+    "id": "upstream-pr-8424-android",
+    "title": "fix(SystemBars): make `safe-area-inset-x` available on API <= 34 (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.3.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8424",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8424",
+      "author": "theproducer",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8424-android.patch"
+  },
+  {
+    "id": "upstream-pr-8429-android",
+    "title": "fix: Fix missing `window.Capacitor` on Android after redirection (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8429",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8429",
+      "author": "caffeinated10xprogrammer",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "supersedes": ["upstream-pr-7781-android"],
+    "patchFile": "patches/upstream-pr-8429-android.patch"
+  },
+  {
+    "id": "upstream-pr-8454-android",
+    "title": "Fix navigation bar overlay in edge-to-edge mode on Android (android)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/android",
+      "versionRange": ">=8.3.2 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8454",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8454",
+      "author": "stormbeforesunsetbee",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "supersedes": ["upstream-pr-8424-android"],
+    "patchFile": "patches/upstream-pr-8454-android.patch"
+  },
+  {
+    "id": "upstream-pr-8458-cli",
+    "title": "fix(cli): iOS allow provision update on build xArchieve (cli)",
+    "recommended": false,
+    "phase": "package",
+    "target": {
+      "type": "package",
+      "packageName": "@capacitor/cli",
+      "versionRange": ">=8.0.0 <9.0.0"
+    },
+    "source": {
+      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8458",
+      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8458",
+      "author": "EltonFaust",
+      "authorAssociation": "external"
+    },
+    "upstream": {
+      "state": "open",
+      "mergedAt": null,
+      "status": "not-merged-as-of-2026-05-12"
+    },
+    "patchFile": "patches/upstream-pr-8458-cli.patch"
   }
 ]

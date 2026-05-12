@@ -1,0 +1,18 @@
+diff --git a/dist/ios/update.js b/dist/ios/update.js
+index 54456cd..10fcbf1 100644
+--- a/dist/ios/update.js
++++ b/dist/ios/update.js
+@@ -272,7 +272,12 @@ async function updatePodfile(config, plugins, deployment) {
+     }
+     const isXcodebuildAvailable = await (0, subprocess_1.isInstalled)('xcodebuild');
+     if (isXcodebuildAvailable) {
+-        await (0, subprocess_1.runCommand)('xcodebuild', ['-project', (0, path_1.basename)(`${config.ios.nativeXcodeProjDirAbs}`), 'clean'], {
++        await (0, subprocess_1.runCommand)('xcodebuild', [
++            '-project',
++            (0, path_1.basename)(`${config.ios.nativeXcodeProjDirAbs}`),
++            ...(config.ios.scheme ? ['-scheme', config.ios.scheme] : []),
++            'clean',
++        ], {
+             cwd: config.ios.nativeProjectDirAbs,
+         });
+     }

@@ -1,0 +1,38 @@
+diff --git a/dist/index.cjs.js b/dist/index.cjs.js
+index e48348e..9c366ea 100644
+--- a/dist/index.cjs.js
++++ b/dist/index.cjs.js
+@@ -523,7 +523,13 @@ class CapacitorHttpPluginWeb extends WebPlugin {
+                 data = await readBlobAsBase64(blob);
+                 break;
+             case 'json':
+-                data = await response.json();
++                responseText = await response.text();
++                try {
++                    data = JSON.parse(responseText);
++                }
++                catch (e) {
++                    data = responseText;
++                }
+                 break;
+             case 'document':
+             case 'text':
+diff --git a/dist/index.js b/dist/index.js
+index 2509854..b10777f 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -519,7 +519,13 @@ class CapacitorHttpPluginWeb extends WebPlugin {
+                 data = await readBlobAsBase64(blob);
+                 break;
+             case 'json':
+-                data = await response.json();
++                responseText = await response.text();
++                try {
++                    data = JSON.parse(responseText);
++                }
++                catch (e) {
++                    data = responseText;
++                }
+                 break;
+             case 'document':
+             case 'text':

@@ -1,0 +1,13 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java b/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
+index a044bfbe..b4aebfce 100755
+--- a/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
++++ b/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
+@@ -129,7 +129,7 @@ public class WebViewLocalServer {
+         }
+ 
+         public Map<String, String> getResponseHeaders() {
+-            return responseHeaders;
++            return new HashMap<>(responseHeaders);
+         }
+     }
+ 

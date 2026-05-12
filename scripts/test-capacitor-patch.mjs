@@ -83,6 +83,29 @@ test('version gating skips incompatible recommended patches', async () => {
   assert.match(result.results[0].reason, /does not satisfy/);
 });
 
+test('selected patches can supersede older overlapping patches', async () => {
+  const fixture = createPackageFixture();
+  fs.writeFileSync(path.join(fixture.patchBaseDir, 'newer.patch'), makeDiff('file.txt', 'old', 'newer'));
+
+  const catalog = [
+    makePatch({ id: 'older', patchFile: 'package.patch' }),
+    makePatch({ id: 'newer', patchFile: 'newer.patch', supersedes: ['older'] }),
+  ];
+
+  const result = await runCapacitorPatch({
+    rootDir: fixture.rootDir,
+    patchBaseDir: fixture.patchBaseDir,
+    catalog,
+    phase: 'package',
+    extConfig: { plugins: { CapacitorPatch: { patches: ['older', 'newer'] } } },
+  });
+
+  assert.equal(result.results[0].status, 'skipped');
+  assert.match(result.results[0].reason, /Superseded by newer/);
+  assert.equal(result.results[1].status, 'applied');
+  assert.equal(fs.readFileSync(fixture.targetFile, 'utf8'), 'one\nnewer\n');
+});
+
 test('patch hunks can apply when the expected block moved uniquely', async () => {
   const fixture = createPackageFixture({ content: 'zero\none\nold\n' });
   const result = await runCapacitorPatch({

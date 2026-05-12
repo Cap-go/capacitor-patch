@@ -1,0 +1,24 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/Bridge.java b/capacitor/src/main/java/com/getcapacitor/Bridge.java
+index dd623ae651..63c2741ca9 100644
+--- a/capacitor/src/main/java/com/getcapacitor/Bridge.java
++++ b/capacitor/src/main/java/com/getcapacitor/Bridge.java
+@@ -44,7 +44,6 @@ import java.net.SocketTimeoutException;
+ import java.net.URL;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+-import java.util.Collections;
+ import java.util.HashMap;
+ import java.util.HashSet;
+ import java.util.LinkedList;
+@@ -264,9 +263,10 @@ public class Bridge {
+         // Start the local web server
+         JSInjector injector = getJSInjector();
+         if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+-            String allowedOrigin = Uri.parse(appUrl).buildUpon().path(null).fragment(null).clearQuery().build().toString();
++            Set<String> allowedOrigins = new HashSet<>(
++                Arrays.asList(Uri.parse(appUrl).buildUpon().path(null).fragment(null).clearQuery().build().toString(), "https://localhost")
++            );
+             try {
+-                WebViewCompat.addDocumentStartJavaScript(webView, injector.getScriptString(), Collections.singleton(allowedOrigin));
++                WebViewCompat.addDocumentStartJavaScript(webView, injector.getScriptString(), allowedOrigins);
+                 injector = null;
