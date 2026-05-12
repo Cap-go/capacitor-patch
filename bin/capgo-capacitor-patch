@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+import('../scripts/capacitor-patch/cli.mjs').then(({ main }) => main()).catch((error) => {
+  console.error(error?.stack ?? error);
+  process.exitCode = 1;
+});

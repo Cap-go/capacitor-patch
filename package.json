@@ -1,0 +1,79 @@
+{
+  "name": "@capgo/capacitor-patch",
+  "version": "8.0.0",
+  "description": "Capacitor plugin for applying vetted Capgo patches during cap sync and cap update.",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "bin": {
+    "capgo-capacitor-patch": "./bin/capgo-capacitor-patch"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "patches/",
+    "scripts/capacitor-patch/",
+    "scripts/capacitor-patch-hook.mjs"
+  ],
+  "author": "Martin Donadieu <martin@capgo.app>",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cap-go/capacitor-patch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cap-go/capacitor-patch/issues"
+  },
+  "homepage": "https://capgo.app/docs/plugins/capacitor-patch/",
+  "keywords": [
+    "capacitor",
+    "patch",
+    "hooks",
+    "sync",
+    "capgo"
+  ],
+  "scripts": {
+    "capacitor:sync:before": "node ./scripts/capacitor-patch-hook.mjs package",
+    "capacitor:update:before": "node ./scripts/capacitor-patch-hook.mjs package",
+    "capacitor:sync:after": "node ./scripts/capacitor-patch-hook.mjs native",
+    "capacitor:update:after": "node ./scripts/capacitor-patch-hook.mjs native",
+    "verify": "bun run verify:web",
+    "verify:web": "bun run build && bun run test:patch",
+    "test": "bun run test:patch",
+    "test:patch": "node --test scripts/test-capacitor-patch.mjs",
+    "lint": "bun run eslint && bun run prettier -- --check",
+    "fmt": "bun run eslint -- --fix && bun run prettier -- --write",
+    "eslint": "eslint . --ext .ts",
+    "prettier": "prettier-pretty-check \"**/*.{css,html,ts,js,mjs,json,md}\"",
+    "build": "bun run clean && tsc && rollup -c rollup.config.mjs",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "bun run build"
+  },
+  "dependencies": {
+    "semver": "^7.7.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@ionic/eslint-config": "^0.4.0",
+    "@ionic/prettier-config": "^4.0.0",
+    "@types/node": "^24.10.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.6.2",
+    "prettier-pretty-check": "^0.2.0",
+    "rimraf": "^6.1.0",
+    "rollup": "^4.53.2",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=8.0.0"
+  },
+  "prettier": "@ionic/prettier-config",
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "capacitor": {}
+}
