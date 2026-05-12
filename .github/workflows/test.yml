@@ -1,6 +1,7 @@
 name: Build source code and test it
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - renovate/**
