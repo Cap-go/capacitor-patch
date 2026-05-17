@@ -143,20 +143,44 @@ The bundled catalog tracks external fix PRs mirrored by Capacitor+ auto-sync bra
 
 Run `capgo-capacitor-patch list --all` to see the shipped catalog. Each entry includes the original upstream Capacitor PR URL, the Capacitor+ sync branch, target package, supported version range, and patch file.
 
-## Future Automation
+## Recurring Patch Automation
 
-The long-term goal is to make this repository the fast path for Capacitor fixes that are waiting upstream.
+This repository is the fast path for Capacitor fixes that are waiting upstream.
 
-For every external PR opened against `ionic-team/capacitor`, the automation should:
+The `Sync upstream Capacitor patches` workflow runs every 6 hours and can also be started manually from GitHub Actions. It:
 
-1. Detect whether the PR is a fix that changes shipped Capacitor code.
-2. Wait until the upstream PR, or the matching Capacitor+ `sync/upstream-pr-*` branch, passes its test suite.
-3. Generate package-ready patch files in this repository.
-4. Open or update a pull request here with the new `patches/catalog.json` entries and patch files.
-5. Run this repository's tests against supported Capacitor versions.
-6. Comment on the original upstream PR with the quick-patch ID and install snippet once the patch package PR is ready.
+1. Checks out this repository and `Cap-go/capacitor-plus`.
+2. Fetches Capacitor+ `sync/upstream-pr-*` branches.
+3. Reads the matching `ionic-team/capacitor` PR metadata.
+4. Skips PRs from Capacitor team members and collaborators.
+5. Skips branches whose Capacitor+ checks are not passing.
+6. Generates package-ready patch files and `patches/catalog.json` entries.
+7. Runs this repository's verification.
+8. Opens or updates a pull request with the generated changes.
 
-The upstream PR comment should only be posted when the patch applies cleanly and this repository's checks pass. A good comment looks like:
+The generator handles direct Android and iOS package source changes. It can also build package artifacts for `@capacitor/core`, `@capacitor/cli`, and native bridge asset patches when an upstream PR changes TypeScript source that users do not receive directly in `node_modules`.
+
+Manual run:
+
+```bash
+bun run sync:patches -- \
+  --capacitor-plus-dir ../capacitor-plus \
+  --remote capgo \
+  --base-ref capgo/plus \
+  --require-checks
+```
+
+Useful options:
+
+- `--pr <number>` only processes a specific upstream PR branch.
+- `--refresh-existing` regenerates patches for entries that already exist.
+- `--no-require-checks` allows local dry-runs before Capacitor+ CI finishes.
+- `--max-build-prs <count>` limits expensive compiled artifact generation.
+- `--dry-run` reports what would be generated without writing files.
+
+After a generated patch PR is merged, the `Comment upstream quick patches` workflow comments on the original upstream Capacitor PR when `PERSONAL_ACCESS_TOKEN` is configured with permission to comment there.
+
+The upstream PR comment is only posted after the patch entry lands in this repository. A good comment looks like:
 
 ````md
 This fix is available as a quick patch through `@capgo/capacitor-patch`.
