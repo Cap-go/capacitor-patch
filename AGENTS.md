@@ -136,3 +136,7 @@ Notes:
 - Default runtime behavior must stay no-op unless the app enables `plugins.CapacitorPatch.recommended` or lists patch IDs.
 - `dist/` is regenerated on every build and should never be edited directly.
 - Use Bun for everything. If a command needs a package binary, use `bunx`.
+
+## Timeout Policy
+
+- Keep CI, script, and runtime timeouts at 10 minutes or less. Use `timeout-minutes: 10` or lower in GitHub Actions and cap timeout values at `600000` ms, `600` seconds, or `10m` unless explicitly requested.
