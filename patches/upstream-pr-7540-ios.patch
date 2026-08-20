@@ -1,0 +1,75 @@
+diff --git a/Capacitor/Capacitor/CAPInstanceConfiguration.h b/Capacitor/Capacitor/CAPInstanceConfiguration.h
+index 171dbb46..ac52df02 100644
+--- a/Capacitor/Capacitor/CAPInstanceConfiguration.h
++++ b/Capacitor/Capacitor/CAPInstanceConfiguration.h
+@@ -13,6 +13,7 @@ NS_SWIFT_NAME(InstanceConfiguration)
+ @property (nonatomic, readonly, nonnull) NSArray<NSString*> *allowedNavigationHostnames;
+ @property (nonatomic, readonly, nonnull) NSURL *localURL;
+ @property (nonatomic, readonly, nonnull) NSURL *serverURL;
++@property (nonatomic, readonly, nullable) NSURL *configURL;
+ @property (nonatomic, readonly, nullable) NSString *errorPath;
+ @property (nonatomic, readonly, nonnull) NSDictionary *pluginConfigurations;
+ @property (nonatomic, readonly) BOOL loggingEnabled;
+diff --git a/Capacitor/Capacitor/CAPInstanceConfiguration.m b/Capacitor/Capacitor/CAPInstanceConfiguration.m
+index d6b7785e..ed5125b0 100644
+--- a/Capacitor/Capacitor/CAPInstanceConfiguration.m
++++ b/Capacitor/Capacitor/CAPInstanceConfiguration.m
+@@ -49,6 +49,13 @@
+         else {
+             _serverURL = _localURL;
+         }
++        
++        if (descriptor.configUrl != nil) {
++            _configURL = descriptor.configUrl;
++        }
++        else {
++            _configURL = [[NSURL alloc] initWithString:(@"capacitor.config.json")];
++        }
+         _errorPath = descriptor.errorPath;
+         // extract the one value we care about from the cordova configuration
+         _cordovaDeployDisabled = [descriptor cordovaDeployDisabled];
+diff --git a/Capacitor/Capacitor/CAPInstanceDescriptor.h b/Capacitor/Capacitor/CAPInstanceDescriptor.h
+index f477ef55..d4d02203 100644
+--- a/Capacitor/Capacitor/CAPInstanceDescriptor.h
++++ b/Capacitor/Capacitor/CAPInstanceDescriptor.h
+@@ -68,6 +68,11 @@ NS_SWIFT_NAME(InstanceDescriptor)
+  @discussion Defaults to nil, in which case the server URL will be constructed from @c urlScheme and @c urlHostname. If set, it will override the other properties. Set by @c server.url in the configuration file.
+  */
+ @property (nonatomic, copy, nullable) NSString *serverURL;
++/**
++ @brief The file URL from which Capacitor will load configuration
++ @discussion Defaults to @c capacitor.config.json located at the root of the application bundle.
++ */
++@property (nonatomic, copy, nullable) NSURL *configUrl;
+ /**
+  @brief The JSON dictionary that contains the plugin-specific configuration information.
+  @discussion Set by @c plugins in the configuration file.
+diff --git a/Capacitor/Capacitor/CAPInstanceDescriptor.swift b/Capacitor/Capacitor/CAPInstanceDescriptor.swift
+index a7eff5f6..db8c8f7d 100644
+--- a/Capacitor/Capacitor/CAPInstanceDescriptor.swift
++++ b/Capacitor/Capacitor/CAPInstanceDescriptor.swift
+@@ -30,6 +30,8 @@ internal extension InstanceDescriptor {
+     // swiftlint:disable function_body_length
+     // swiftlint:disable:next identifier_name
+     @objc func _parseConfiguration(at capacitorURL: URL?, cordovaConfiguration cordovaURL: URL?) {
++        configUrl = capacitorURL
++        
+         // sanity check that the app directory is valid
+         var isDirectory: ObjCBool = ObjCBool(false)
+         if warnings.contains(.missingAppDir) == false,
+diff --git a/Capacitor/Capacitor/CapacitorBridge.swift b/Capacitor/Capacitor/CapacitorBridge.swift
+index 7b8b9b99..81b1e6cc 100644
+--- a/Capacitor/Capacitor/CapacitorBridge.swift
++++ b/Capacitor/Capacitor/CapacitorBridge.swift
+@@ -305,9 +305,9 @@ open class CapacitorBridge: NSObject, CAPBridgeProtocol {
+     func registerPlugins() {
+         var pluginList: [AnyClass] = [CAPHttpPlugin.self, CAPConsolePlugin.self, CAPWebViewPlugin.self, CAPCookiesPlugin.self, CAPSystemBarsPlugin.self]
+ 
+-        if autoRegisterPlugins {
++        if autoRegisterPlugins && config.configURL != nil {
+             do {
+-                if let pluginJSON = Bundle.main.url(forResource: "capacitor.config", withExtension: "json") {
++                if let pluginJSON = Bundle.main.url(forResource: (config.configURL!.path as NSString).deletingPathExtension, withExtension: "json") {
+                     let pluginData = try Data(contentsOf: pluginJSON)
+                     let registrationList = try JSONDecoder().decode(RegistrationList.self, from: pluginData)
+ 
