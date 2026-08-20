@@ -1,0 +1,26 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/MessageHandler.java b/capacitor/src/main/java/com/getcapacitor/MessageHandler.java
+index dc91c9b0..1499deec 100644
+--- a/capacitor/src/main/java/com/getcapacitor/MessageHandler.java
++++ b/capacitor/src/main/java/com/getcapacitor/MessageHandler.java
+@@ -26,8 +26,7 @@ public class MessageHandler {
+         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER) && !bridge.getConfig().isUsingLegacyBridge()) {
+             WebViewCompat.WebMessageListener capListener = (view, message, sourceOrigin, isMainFrame, replyProxy) -> {
+                 if (isMainFrame) {
+-                    postMessage(message.getData());
+-                    javaScriptReplyProxy = replyProxy;
++                    onModernBridgeMessage(message.getData(), replyProxy);
+                 } else {
+                     Logger.warn("Plugin execution is allowed in Main Frame only");
+                 }
+@@ -42,6 +41,11 @@ public class MessageHandler {
+         }
+     }
+ 
++    void onModernBridgeMessage(String data, JavaScriptReplyProxy replyProxy) {
++        javaScriptReplyProxy = replyProxy;
++        postMessage(data);
++    }
++
+     /**
+      * The main message handler that will be called from JavaScript
+      * to send a message to the native bridge.
