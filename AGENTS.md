@@ -136,6 +136,7 @@ Notes:
 - Default runtime behavior must stay no-op unless the app enables `plugins.CapacitorPatch.recommended` or lists patch IDs.
 - `dist/` is regenerated on every build and should never be edited directly.
 - Use Bun for everything. If a command needs a package binary, use `bunx`.
+- Production and PR beta publishes use `npm stage publish`. Plugin CI only has the org `NPM_TOKEN`.
 
 ## Timeout Policy
 
