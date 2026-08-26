@@ -149,10 +149,10 @@ index f5e7cc44..742cf3f 100644
 +                            const normalizedContentType = contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase();
 +                            const data = nativeResponse.status === 204
 +                                ? null
-+                                : typeof nativeResponse.data === 'string'
-+                                    ? base64StringToArrayBuffer(nativeResponse.data)
-+                                    : normalizedContentType?.startsWith('application/json')
-+                                        ? JSON.stringify(nativeResponse.data)
++                                : normalizedContentType?.startsWith('application/json')
++                                    ? JSON.stringify(nativeResponse.data)
++                                    : typeof nativeResponse.data === 'string'
++                                        ? base64StringToArrayBuffer(nativeResponse.data)
 +                                        : base64StringToArrayBuffer(String(nativeResponse.data));
                              // intercept & parse response before returning
                              const response = new Response(data, {
