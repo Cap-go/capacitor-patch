@@ -1,0 +1,39 @@
+diff --git a/dist/android/update.js b/dist/android/update.js
+index 5e3b058..a3f4b5c 100644
+--- a/dist/android/update.js
++++ b/dist/android/update.js
+@@ -28,6 +28,7 @@ async function updateAndroid(config) {
+     if (cordovaPlugins.length > 0) {
+         await copyPluginsNativeFiles(config, cordovaPlugins);
+     }
++    await copyPluginsNativeFiles(config, capacitorPlugins);
+     if (!(await (0, fs_extra_1.pathExists)(config.android.webDirAbs))) {
+         await (0, copy_1.copy)(config, platform);
+     }
+diff --git a/dist/plugin.js b/dist/plugin.js
+index 3be0fa0..db03dd0 100644
+--- a/dist/plugin.js
++++ b/dist/plugin.js
+@@ -38,6 +38,10 @@ async function resolvePlugin(config, name) {
+         if (!meta) {
+             return null;
+         }
++        const pluginXMLPath = (0, path_1.join)(rootPath, 'plugin.xml');
++        const xmlMeta = (await (0, fs_extra_1.pathExists)(pluginXMLPath))
++            ? await (0, xml_1.readXML)(pluginXMLPath)
++            : null;
+         if (meta.capacitor) {
+             return {
+                 id: name,
+@@ -46,10 +50,9 @@ async function resolvePlugin(config, name) {
+                 rootPath,
+                 repository: meta.repository,
+                 manifest: meta.capacitor,
++                xml: xmlMeta ? xmlMeta.plugin : undefined,
+             };
+         }
+-        const pluginXMLPath = (0, path_1.join)(rootPath, 'plugin.xml');
+-        const xmlMeta = await (0, xml_1.readXML)(pluginXMLPath);
+         return {
+             id: name,
+             name: fixName(name),

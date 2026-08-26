@@ -1,0 +1,62 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/CapacitorWebView.java b/capacitor/src/main/java/com/getcapacitor/CapacitorWebView.java
+index 22f6f972..d30529b7 100644
+--- a/capacitor/src/main/java/com/getcapacitor/CapacitorWebView.java
++++ b/capacitor/src/main/java/com/getcapacitor/CapacitorWebView.java
+@@ -2,6 +2,7 @@ package com.getcapacitor;
+ 
+ import android.content.Context;
+ import android.os.Build;
++import android.text.InputType;
++import android.view.inputmethod.InputMethodManager;
+ import android.util.AttributeSet;
+ import android.util.TypedValue;
+ import android.view.KeyEvent;
+@@ -17,6 +18,7 @@ public class CapacitorWebView extends WebView {
+ 
+     private BaseInputConnection capInputConnection;
+     private Bridge bridge;
++    private boolean autosuggestionEnabled = true;
+ 
+     public CapacitorWebView(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -26,6 +28,10 @@ public class CapacitorWebView extends WebView {
+         this.bridge = bridge;
+     }
+ 
++    public void setAutosuggestionEnabled(boolean enabled) {
++        autosuggestionEnabled = enabled;
++        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
++        if (imm != null) {
++            imm.restartInput(this);
++        }
++    }
++
+     @Override
+     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+         CapConfig config;
+@@ -36,13 +42,23 @@ public class CapacitorWebView extends WebView {
+         }
+ 
+         boolean captureInput = config.isInputCaptured();
++        InputConnection inputConnection;
+         if (captureInput) {
+             if (capInputConnection == null) {
+                 capInputConnection = new BaseInputConnection(this, false);
+             }
+-            return capInputConnection;
++            inputConnection = capInputConnection;
++        } else {
++            inputConnection = super.onCreateInputConnection(outAttrs);
+         }
+-        return super.onCreateInputConnection(outAttrs);
++
++        if (!autosuggestionEnabled) {
++            // See https://stackoverflow.com/a/28009054/640584
++            outAttrs.inputType &= ~EditorInfo.TYPE_MASK_VARIATION;
++            outAttrs.inputType |= InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD;
++        }
++
++        return inputConnection;
+     }
+ 
+     @Override

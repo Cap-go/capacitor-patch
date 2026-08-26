@@ -1,0 +1,46 @@
+diff --git a/Capacitor/Capacitor/CAPBridgeViewController.swift b/Capacitor/Capacitor/CAPBridgeViewController.swift
+index a7285213..8d8cf088 100644
+--- a/Capacitor/Capacitor/CAPBridgeViewController.swift
++++ b/Capacitor/Capacitor/CAPBridgeViewController.swift
+@@ -10,6 +10,12 @@ import Cordova
+ 
+     public fileprivate(set) var webView: WKWebView?
+ 
++    // WKHTTPCookieStore does not retain observers, so we hold a strong reference here
++    // (else it deallocs immediately and `cookiesDidChange` never fires) plus the store
++    // it was added to, so the observer can be removed in `deinit` as the docs require.
++    private var cookieObserver: CapacitorWKCookieObserver?
++    private var cookieObserverStore: WKHTTPCookieStore?
++
+     public var isStatusBarVisible = true
+     public var statusBarStyle: UIStatusBarStyle = .default
+     public var statusBarAnimation: UIStatusBarAnimation = .fade
+@@ -27,6 +33,12 @@ import Cordova
+         return false
+     }()
+ 
++    deinit {
++        if let cookieObserver = cookieObserver {
++            cookieObserverStore?.remove(cookieObserver)
++        }
++    }
++
+     override public final func loadView() {
+         // load the configuration and set the logging flag
+         let configDescriptor = instanceDescriptor()
+@@ -118,7 +130,11 @@ import Cordova
+      */
+     open func webViewConfiguration(for instanceConfiguration: InstanceConfiguration) -> WKWebViewConfiguration {
+         let webViewConfiguration = WKWebViewConfiguration()
+-        webViewConfiguration.websiteDataStore.httpCookieStore.add(CapacitorWKCookieObserver())
++        let cookieObserver = CapacitorWKCookieObserver()
++        let cookieStore = webViewConfiguration.websiteDataStore.httpCookieStore
++        if let existingObserver = self.cookieObserver {
++            cookieObserverStore?.remove(existingObserver)
++        }
++        cookieStore.add(cookieObserver)
++        self.cookieObserver = cookieObserver
++        self.cookieObserverStore = cookieStore
+         webViewConfiguration.allowsInlineMediaPlayback = true
+         webViewConfiguration.suppressesIncrementalRendering = false
+         webViewConfiguration.allowsAirPlayForMediaPlayback = true
