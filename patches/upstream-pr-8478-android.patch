@@ -1,8 +1,8 @@
 diff --git a/capacitor/src/main/assets/native-bridge.js b/capacitor/src/main/assets/native-bridge.js
-index 000b49a9..5a26f66e 100644
+index f5e7cc44..742cf3f 100644
 --- a/capacitor/src/main/assets/native-bridge.js
 +++ b/capacitor/src/main/assets/native-bridge.js
-@@ -44,6 +44,33 @@ var nativeBridge = (function (exports) {
+@@ -44,18 +44,45 @@
          reader.onerror = reject;
          reader.readAsBinaryString(file);
      });
@@ -36,7 +36,21 @@ index 000b49a9..5a26f66e 100644
      const convertFormData = async (formData) => {
          const newFormData = [];
          for (const pair of formData.entries()) {
-@@ -65,9 +92,38 @@ var nativeBridge = (function (exports) {
+             const [key, value] = pair;
+-            if (value instanceof File) {
++            if (value instanceof Blob) {
+                 const base64File = await readFileAsBase64(value);
+                 newFormData.push({
+                     key,
+                     value: base64File,
+                     type: 'base64File',
+                     contentType: value.type,
+-                    fileName: value.name,
++                    fileName: value.name || 'blob',
+                 });
+             }
+             else {
+@@ -65,9 +92,31 @@
          return newFormData;
      };
      const convertBody = async (body, contentType) => {
@@ -63,13 +77,6 @@ index 000b49a9..5a26f66e 100644
 +                headers: { 'Content-Type': contentType || 'application/octet-stream' },
 +            };
 +        }
-+        else if (ArrayBuffer.isView(body)) {
-+            return {
-+                data: readDataViewAsBase64(body),
-+                type: 'binary',
-+                headers: { 'Content-Type': contentType || 'application/octet-stream' },
-+            };
-+        }
 +        if ((typeof ReadableStream !== 'undefined' && body instanceof ReadableStream) || body instanceof Uint8Array) {
              let encodedData;
 -            if (body instanceof ReadableStream) {
@@ -77,7 +84,7 @@ index 000b49a9..5a26f66e 100644
                  const reader = body.getReader();
                  const chunks = [];
                  while (true) {
-@@ -87,7 +143,9 @@ var nativeBridge = (function (exports) {
+@@ -87,7 +136,9 @@
              else {
                  encodedData = body;
              }
@@ -88,7 +95,7 @@ index 000b49a9..5a26f66e 100644
              let type;
              if (contentType === 'application/json') {
                  try {
-@@ -102,7 +160,7 @@ var nativeBridge = (function (exports) {
+@@ -102,7 +153,7 @@
                  type = 'formData';
              }
              else if (contentType === null || contentType === void 0 ? void 0 : contentType.startsWith('image')) {
@@ -97,11 +104,11 @@ index 000b49a9..5a26f66e 100644
              }
              else if (contentType === 'application/octet-stream') {
                  type = 'binary';
-@@ -128,14 +186,6 @@ var nativeBridge = (function (exports) {
+@@ -128,14 +179,6 @@
                  type: 'formData',
              };
          }
--        else if (body instanceof Blob) {
+-        else if (body instanceof File) {
 -            const fileData = await readFileAsBase64(body);
 -            return {
 -                data: fileData,
@@ -112,7 +119,7 @@ index 000b49a9..5a26f66e 100644
          return { data: body, type: 'json' };
      };
      const CAPACITOR_HTTP_INTERCEPTOR = '/_capacitor_http_interceptor_';
-@@ -535,15 +585,15 @@ var nativeBridge = (function (exports) {
+@@ -531,15 +574,18 @@
                                  data: requestData,
                                  dataType: type,
                                  headers: nativeHeaders,
@@ -126,11 +133,14 @@ index 000b49a9..5a26f66e 100644
 -                            if (nativeResponse.status === 204) {
 -                                data = null;
 -                            }
++                            const normalizedContentType = contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase();
 +                            const data = nativeResponse.status === 204
 +                                ? null
-+                                : (contentType === null || contentType === void 0 ? void 0 : contentType.startsWith('application/json'))
-+                                    ? JSON.stringify(nativeResponse.data)
-+                                    : base64StringToArrayBuffer(nativeResponse.data);
++                                : typeof nativeResponse.data === 'string'
++                                    ? base64StringToArrayBuffer(nativeResponse.data)
++                                    : normalizedContentType?.startsWith('application/json')
++                                        ? JSON.stringify(nativeResponse.data)
++                                        : base64StringToArrayBuffer(String(nativeResponse.data));
                              // intercept & parse response before returning
                              const response = new Response(data, {
                                  headers: nativeResponse.headers,

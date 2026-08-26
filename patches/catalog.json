@@ -879,6 +879,7 @@
     "id": "upstream-pr-8478-android",
     "title": "fix(http): support binary request bodies (android)",
     "recommended": false,
+    "supersedes": ["upstream-pr-8403-android"],
     "phase": "package",
     "target": {
       "type": "package",
@@ -902,6 +903,7 @@
     "id": "upstream-pr-8478-ios",
     "title": "fix(http): support binary request bodies (ios)",
     "recommended": false,
+    "supersedes": ["upstream-pr-8403-ios"],
     "phase": "package",
     "target": {
       "type": "package",
@@ -943,51 +945,5 @@
       "status": "not-merged"
     },
     "patchFile": "patches/upstream-pr-8520-ios.patch"
-  },
-  {
-    "id": "upstream-pr-8527-android",
-    "title": "fix(ios): adopt UIScene life cycle in default iOS app templates (android)",
-    "recommended": false,
-    "phase": "package",
-    "target": {
-      "type": "package",
-      "packageName": "@capacitor/android",
-      "versionRange": ">=8.0.0 <9.0.0"
-    },
-    "source": {
-      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8527",
-      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8527",
-      "author": "nilspep",
-      "authorAssociation": "external"
-    },
-    "upstream": {
-      "state": "closed",
-      "mergedAt": null,
-      "status": "not-merged"
-    },
-    "patchFile": "patches/upstream-pr-8527-android.patch"
-  },
-  {
-    "id": "upstream-pr-8527-ios",
-    "title": "fix(ios): adopt UIScene life cycle in default iOS app templates (ios)",
-    "recommended": false,
-    "phase": "package",
-    "target": {
-      "type": "package",
-      "packageName": "@capacitor/ios",
-      "versionRange": ">=8.0.0 <9.0.0"
-    },
-    "source": {
-      "upstreamPullRequest": "https://github.com/ionic-team/capacitor/pull/8527",
-      "capacitorPlusBranch": "https://github.com/Cap-go/capacitor-plus/tree/sync/upstream-pr-8527",
-      "author": "nilspep",
-      "authorAssociation": "external"
-    },
-    "upstream": {
-      "state": "closed",
-      "mergedAt": null,
-      "status": "not-merged"
-    },
-    "patchFile": "patches/upstream-pr-8527-ios.patch"
   }
 ]

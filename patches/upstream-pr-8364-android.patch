@@ -7,6 +7,7 @@ index 22f6f972..d30529b7 100644
  import android.content.Context;
  import android.os.Build;
 +import android.text.InputType;
++import android.view.inputmethod.InputMethodManager;
  import android.util.AttributeSet;
  import android.util.TypedValue;
  import android.view.KeyEvent;
@@ -24,6 +25,10 @@ index 22f6f972..d30529b7 100644
  
 +    public void setAutosuggestionEnabled(boolean enabled) {
 +        autosuggestionEnabled = enabled;
++        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
++        if (imm != null) {
++            imm.restartInput(this);
++        }
 +    }
 +
      @Override
@@ -48,7 +53,7 @@ index 22f6f972..d30529b7 100644
 +        if (!autosuggestionEnabled) {
 +            // See https://stackoverflow.com/a/28009054/640584
 +            outAttrs.inputType &= ~EditorInfo.TYPE_MASK_VARIATION;
-+            outAttrs.inputType |= InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD;
++            outAttrs.inputType |= InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD;
 +        }
 +
 +        return inputConnection;

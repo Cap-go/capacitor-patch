@@ -1,5 +1,5 @@
 diff --git a/dist/android/update.js b/dist/android/update.js
-index 5e3b058..f12c0f1 100644
+index 5e3b058..a3f4b5c 100644
 --- a/dist/android/update.js
 +++ b/dist/android/update.js
 @@ -28,6 +28,7 @@ async function updateAndroid(config) {
@@ -10,31 +10,22 @@ index 5e3b058..f12c0f1 100644
      if (!(await (0, fs_extra_1.pathExists)(config.android.webDirAbs))) {
          await (0, copy_1.copy)(config, platform);
      }
-@@ -97,8 +98,8 @@ async function installGradlePlugins(config, capacitorPlugins, cordovaPlugins) {
-         capacitorAndroidPackagePath = (0, node_1.resolveNode)(config.app.rootDir, '@capacitor/android', 'package.json');
-     }
-     if (!capacitorAndroidPackagePath) {
--        (0, errors_1.fatal)(`Unable to find ${colors_1.default.strong('node_modules/@capacitor-plus/android')} or ${colors_1.default.strong('node_modules/@capacitor/android')}.\n` +
--            `Are you sure ${colors_1.default.strong('@capacitor-plus/android')} or ${colors_1.default.strong('@capacitor/android')} is installed?`);
-+        (0, errors_1.fatal)(`Unable to find ${colors_1.default.strong('node_modules/@capacitor/android')}.\n` +
-+            `Are you sure ${colors_1.default.strong('@capacitor/android')} is installed?`);
-     }
-     const capacitorAndroidPath = (0, path_1.resolve)((0, path_1.dirname)(capacitorAndroidPackagePath), 'capacitor');
-     const settingsPath = config.android.platformDirAbs;
 diff --git a/dist/plugin.js b/dist/plugin.js
 index 3be0fa0..db03dd0 100644
 --- a/dist/plugin.js
 +++ b/dist/plugin.js
-@@ -38,6 +38,8 @@ async function resolvePlugin(config, name) {
+@@ -38,6 +38,10 @@ async function resolvePlugin(config, name) {
          if (!meta) {
              return null;
          }
 +        const pluginXMLPath = (0, path_1.join)(rootPath, 'plugin.xml');
-+        const xmlMeta = await (0, xml_1.readXML)(pluginXMLPath);
++        const xmlMeta = (await (0, fs_extra_1.pathExists)(pluginXMLPath))
++            ? await (0, xml_1.readXML)(pluginXMLPath)
++            : null;
          if (meta.capacitor) {
              return {
                  id: name,
-@@ -46,10 +48,9 @@ async function resolvePlugin(config, name) {
+@@ -46,10 +50,9 @@ async function resolvePlugin(config, name) {
                  rootPath,
                  repository: meta.repository,
                  manifest: meta.capacitor,

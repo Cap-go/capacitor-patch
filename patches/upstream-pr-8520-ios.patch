@@ -35,6 +35,9 @@ index a7285213..8d8cf088 100644
 -        webViewConfiguration.websiteDataStore.httpCookieStore.add(CapacitorWKCookieObserver())
 +        let cookieObserver = CapacitorWKCookieObserver()
 +        let cookieStore = webViewConfiguration.websiteDataStore.httpCookieStore
++        if let existingObserver = self.cookieObserver {
++            cookieObserverStore?.remove(existingObserver)
++        }
 +        cookieStore.add(cookieObserver)
 +        self.cookieObserver = cookieObserver
 +        self.cookieObserverStore = cookieStore

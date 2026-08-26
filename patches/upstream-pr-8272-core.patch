@@ -1,8 +1,17 @@
 diff --git a/dist/index.cjs.js b/dist/index.cjs.js
-index 34d371f..b4d1b33 100644
+index 34d371f..e1f2a3b 100644
 --- a/dist/index.cjs.js
 +++ b/dist/index.cjs.js
-@@ -443,7 +443,7 @@ const buildUrlParams = (params, shouldEncode = true) => {
+@@ -435,13 +435,16 @@
+         let encodedValue;
+         let item;
+         if (Array.isArray(value)) {
++            if (value.length === 0) {
++                return accumulator;
++            }
+             item = '';
+             value.forEach((str) => {
+                 encodedValue = shouldEncode ? encodeURIComponent(str) : str;
                  item += `${key}=${encodedValue}&`;
              });
              // last character will always be "&" so slice it off
@@ -11,7 +20,7 @@ index 34d371f..b4d1b33 100644
          }
          else {
              encodedValue = shouldEncode ? encodeURIComponent(value) : value;
-@@ -452,7 +452,7 @@ const buildUrlParams = (params, shouldEncode = true) => {
+@@ -450,7 +453,7 @@
          return `${accumulator}&${item}`;
      }, '');
      // Remove initial "&" from the reduce
@@ -21,10 +30,19 @@ index 34d371f..b4d1b33 100644
  /**
   * Build the RequestInit object based on the options passed into the initial request
 diff --git a/dist/index.js b/dist/index.js
-index fb980f2..9f95d1d 100644
+index fb980f2..f4e5d6c 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -439,7 +439,7 @@ const buildUrlParams = (params, shouldEncode = true) => {
+@@ -431,13 +431,16 @@
+         let encodedValue;
+         let item;
+         if (Array.isArray(value)) {
++            if (value.length === 0) {
++                return accumulator;
++            }
+             item = '';
+             value.forEach((str) => {
+                 encodedValue = shouldEncode ? encodeURIComponent(str) : str;
                  item += `${key}=${encodedValue}&`;
              });
              // last character will always be "&" so slice it off
@@ -33,7 +51,7 @@ index fb980f2..9f95d1d 100644
          }
          else {
              encodedValue = shouldEncode ? encodeURIComponent(value) : value;
-@@ -448,7 +448,7 @@ const buildUrlParams = (params, shouldEncode = true) => {
+@@ -446,7 +449,7 @@
          return `${accumulator}&${item}`;
      }, '');
      // Remove initial "&" from the reduce

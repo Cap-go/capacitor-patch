@@ -2,12 +2,45 @@ diff --git a/dist/util/spm.js b/dist/util/spm.js
 index 81877e7..169e9d0 100644
 --- a/dist/util/spm.js
 +++ b/dist/util/spm.js
-@@ -86,7 +86,7 @@ exports.removeCocoapodsFiles = removeCocoapodsFiles;
+@@ -86,7 +86,7 @@
  async function generatePackageText(config, plugins) {
-     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+     var _a, _b, _c;
      const iosPlatformVersion = await (0, common_1.getCapacitorPackageVersion)(config, config.ios.name);
 -    const iosVersion = (0, common_2.getMajoriOSVersion)(config);
 +    const iosVersion = (0, common_2.getMajorMinoriOSVersion)(config);
-     const packageTraits = (_d = (_c = (_b = (_a = config.app.extConfig.experimental) === null || _a === void 0 ? void 0 : _a.ios) === null || _b === void 0 ? void 0 : _b.spm) === null || _c === void 0 ? void 0 : _c.packageTraits) !== null && _d !== void 0 ? _d : {};
-     const swiftToolsVersion = (_h = (_g = (_f = (_e = config.app.extConfig.experimental) === null || _e === void 0 ? void 0 : _e.ios) === null || _f === void 0 ? void 0 : _f.spm) === null || _g === void 0 ? void 0 : _g.swiftToolsVersion) !== null && _h !== void 0 ? _h : '5.9';
-     let packageSwiftText = `// swift-tools-version: ${swiftToolsVersion}
+     let packageSwiftText = `// swift-tools-version: 5.9
+ import PackageDescription
+ 
+diff --git a/dist/ios/common.js b/dist/ios/common.js
+index 8e5a1b2..f3c2d8e 100644
+--- a/dist/ios/common.js
++++ b/dist/ios/common.js
+@@ -114,3 +114,28 @@
+     return iosVersion;
+ }
+ exports.getMajoriOSVersion = getMajoriOSVersion;
++
++function getMajorMinoriOSVersion(config) {
++    const pbx = (0, fs_extra_1.readFileSync)((0, path_1.join)(config.ios.nativeXcodeProjDirAbs, 'project.pbxproj'), 'utf-8');
++    const searchString = 'IPHONEOS_DEPLOYMENT_TARGET = ';
++    const startIndex = pbx.indexOf(searchString);
++    if (startIndex === -1) {
++        return '';
++    }
++    const valueStart = startIndex + searchString.length;
++    const endIndex = pbx.indexOf(';', valueStart);
++    const newlineIndex = pbx.indexOf('\n', valueStart);
++    const actualEnd = endIndex !== -1 && newlineIndex !== -1
++        ? Math.min(endIndex, newlineIndex)
++        : endIndex !== -1
++            ? endIndex
++            : newlineIndex !== -1
++                ? newlineIndex
++                : pbx.length;
++    let iosVersion = pbx.substring(valueStart, actualEnd).trim();
++    if (iosVersion.endsWith('.0')) {
++        iosVersion = iosVersion.slice(0, -2);
++    }
++    return iosVersion;
++}
++exports.getMajorMinoriOSVersion = getMajorMinoriOSVersion;
