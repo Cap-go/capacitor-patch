@@ -133,9 +133,10 @@ index f5e7cc44..742cf3f 100644
 -                            if (nativeResponse.status === 204) {
 -                                data = null;
 -                            }
++                            const normalizedContentType = contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase();
 +                            const data = nativeResponse.status === 204
 +                                ? null
-+                                : (contentType === null || contentType === void 0 ? void 0 : contentType.startsWith('application/json'))
++                                : normalizedContentType?.startsWith('application/json')
 +                                    ? JSON.stringify(nativeResponse.data)
 +                                    : typeof nativeResponse.data === 'string'
 +                                        ? base64StringToArrayBuffer(nativeResponse.data)
@@ -189,7 +190,7 @@ index 6180d642..c2f966ae 100644
 +        }
 +    }
 +
-+    static byte[] decodeBase64RequestBody(String body) {
++    private static byte[] decodeBase64RequestBody(String body) {
 +        return android.util.Base64.decode(body, android.util.Base64.DEFAULT);
 +    }
 +
