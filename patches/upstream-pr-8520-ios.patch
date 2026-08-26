@@ -10,7 +10,7 @@ index a7285213..8d8cf088 100644
 +    // (else it deallocs immediately and `cookiesDidChange` never fires) plus the store
 +    // it was added to, so the observer can be removed in `deinit` as the docs require.
 +    private var cookieObserver: CapacitorWKCookieObserver?
-+    private weak var cookieObserverStore: WKHTTPCookieStore?
++    private var cookieObserverStore: WKHTTPCookieStore?
 +
      public var isStatusBarVisible = true
      public var statusBarStyle: UIStatusBarStyle = .default

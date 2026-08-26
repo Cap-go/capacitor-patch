@@ -51,7 +51,7 @@ index f5e7cc44..742cf3f 100644
          for (const pair of formData.entries()) {
              const [key, value] = pair;
 -            if (value instanceof File) {
-+            if (value instanceof Blob) {
++            if (typeof Blob !== 'undefined' && value instanceof Blob) {
                  const base64File = await readFileAsBase64(value);
                  newFormData.push({
                      key,
@@ -76,7 +76,7 @@ index f5e7cc44..742cf3f 100644
 +                headers: { 'Content-Type': body.type },
 +            };
 +        }
-+        else if (body instanceof Blob) {
++        else if (typeof Blob !== 'undefined' && body instanceof Blob) {
 +            return {
 +                data: await readBlobAsBase64(body),
 +                type: 'binary',
