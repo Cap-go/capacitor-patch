@@ -26,8 +26,7 @@ const SKIP_DIRS = new Set([
   'example-app',
 ]);
 
-const CAP9_REPLACEMENT_LINE =
-  /\bBridge\.(saveCall|getSavedCall|releaseCall)\s*\(|\bsavedCall\s*\(\s*withID\s*:/;
+const CAP9_REPLACEMENT_LINE = /\bBridge\.(saveCall|getSavedCall|releaseCall)\s*\(|\bsavedCall\s*\(\s*withID\s*:/;
 
 /** @type {{ id: string, pattern: RegExp, exts: string[], ignoreLine?: RegExp }[]} */
 const RULES = [
@@ -107,8 +106,7 @@ const RULES = [
   },
 ];
 
-const CORDOVA_SPM_LINE =
-  /\.product\s*\(\s*name\s*:\s*"Cordova"\s*,\s*package\s*:\s*"capacitor-swift-pm"\s*\)/;
+const CORDOVA_SPM_LINE = /\.product\s*\(\s*name\s*:\s*"Cordova"\s*,\s*package\s*:\s*"capacitor-swift-pm"\s*\)/;
 
 function readText(p) {
   try {
@@ -241,8 +239,7 @@ function collectScanRoots(pluginDir, pkg) {
       } catch {
         continue;
       }
-      const subCap =
-        typeof subPkg.capacitor === 'object' && subPkg.capacitor ? subPkg.capacitor : cap;
+      const subCap = typeof subPkg.capacitor === 'object' && subPkg.capacitor ? subPkg.capacitor : cap;
       roots.push(...collectScanRootsForCap(subDir, subCap));
     }
   }
