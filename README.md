@@ -38,9 +38,9 @@ Apply vetted fixes to Capacitor without waiting for upstream releases. This pack
 - **Opt-in patches**: list patch IDs under `CapacitorPatch.patches` in `capacitor.config`, nothing runs by default.
 - **Patch catalog**: each patch links to its upstream Capacitor PR and supported version range.
 - **CLI**: `capgo-capacitor-patch list --all` shows the catalog and `doctor` dry-runs selected patches.
-- **Strict mode**: `strict: true` fails the sync when a selected patch no longer applies.
+- **Strict mode**: `strict: true` fails `cap sync` and `cap update` when a selected patch no longer applies.
 - **Skip list**: `disabled` turns off specific patches.
-- **Platforms**: iOS and Android. Hook only: patches run during `cap sync` and `cap update`, and there is no runtime API.
+- **Platforms**: iOS and Android. Lifecycle hook: patches run during `cap sync` and `cap update`, or by hand with the CLI. There is no runtime API.
 
 ## Why
 
