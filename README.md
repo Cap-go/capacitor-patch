@@ -1,6 +1,8 @@
 # @capgo/capacitor-patch
 
-<a href="https://capgo.app/">
+Apply vetted fixes to Capacitor without waiting for upstream releases. This package applies small, version-gated patches during `cap sync` and `cap update`, so every app does not need its own patch scripts.
+
+<a href="https://capgo.app/?ref=plugin_capacitor_patch">
   <img
     src="https://capgo.app/readme-banner.svg?repo=Cap-go/capacitor-patch"
     alt="Capgo - Instant updates for Capacitor"
@@ -8,17 +10,37 @@
 </a>
 
 <div align="center">
+  <p>
+    <b>Capgo</b>: open-source live updates for Ionic and Capacitor apps. Ship OTA fixes and features instantly, without
+    waiting for app store review.
+  </p>
   <h2>
-    <a href="https://capgo.app/?ref=plugin_capacitor_patch">Get Instant updates for your App with Capgo</a>
+    <a href="https://capgo.app/register/?ref=plugin_capacitor_patch">➡️ Get started for free</a>
   </h2>
-  <h2>
+  <p>14-day unlimited free trial. No credit card required</p>
+  <p>
     <a href="https://capgo.app/consulting/?ref=plugin_capacitor_patch">
-      Missing a feature? We can build the plugin for you
+      Missing a feature? We'll build the plugin for you 💪
     </a>
-  </h2>
+  </p>
 </div>
 
-Capacitor plugin for applying vetted Capgo patches during `cap sync` and `cap update`.
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/Cap-go/capacitor-patch/main/assets/github-social-preview.png"
+    alt="@capgo/capacitor-patch for Capacitor apps"
+    width="300"
+  />
+</p>
+
+## Key features
+
+- **Opt-in patches**: list patch IDs under `CapacitorPatch.patches` in `capacitor.config`, nothing runs by default.
+- **Patch catalog**: each patch links to its upstream Capacitor PR and supported version range.
+- **CLI**: `capgo-capacitor-patch list --all` shows the catalog and `doctor` dry-runs selected patches.
+- **Strict mode**: `strict: true` fails the sync when a selected patch no longer applies.
+- **Skip list**: `disabled` turns off specific patches.
+- **Platforms**: iOS and Android. Hook only: patches run during `cap sync` and `cap update`, and there is no runtime API.
 
 ## Why
 
