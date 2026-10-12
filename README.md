@@ -25,7 +25,7 @@ Apply vetted fixes to Capacitor without waiting for upstream releases. This pack
   </p>
 </div>
 
-> 🤖 **Building with an AI coding agent?** Install [Capgo skills](https://capgo.app/skills/?ref=plugin_capacitor_patch) so Claude Code, Codex, Cursor, Copilot, or Gemini CLI know how to install and use `@capgo/capacitor-patch` in your Capacitor app: `npx skills add Cap-go/capgo-skills`. Then ask your agent: *"Add @capgo/capacitor-patch to my Capacitor app and wire it up."* [Agent setup guides](https://capgo.app/agents/?ref=plugin_capacitor_patch) · [Hosted MCP](https://capgo.app/docs/ai/mcp/?ref=plugin_capacitor_patch)
+> 🤖 **Building with an AI coding agent?** Install [Capgo skills](https://capgo.app/skills/?ref=plugin_capacitor_patch) so Claude Code, Codex, Cursor, Copilot, or Gemini CLI know how to install and use `@capgo/capacitor-patch` in your Capacitor app: `npx skills add Cap-go/capgo-skills`. Then ask your agent: _"Add @capgo/capacitor-patch to my Capacitor app and wire it up."_ [Agent setup guides](https://capgo.app/agents/?ref=plugin_capacitor_patch) · [Hosted MCP](https://capgo.app/docs/ai/mcp/?ref=plugin_capacitor_patch)
 
 <p align="center">
   <img
