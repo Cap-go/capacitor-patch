@@ -1,0 +1,116 @@
+diff --git a/capacitor/src/main/java/com/getcapacitor/Bridge.java b/capacitor/src/main/java/com/getcapacitor/Bridge.java
+index 2a72a430..a9520679 100644
+--- a/capacitor/src/main/java/com/getcapacitor/Bridge.java
++++ b/capacitor/src/main/java/com/getcapacitor/Bridge.java
+@@ -272,7 +272,8 @@ public class Bridge {
+                 Logger.warn("Invalid url, using fallback");
+             }
+         }
+-        localServer = new WebViewLocalServer(context, this, injector, authorities, html5mode);
++        boolean jsProfilingEnabled = config.isJsProfilingEnabled();
++        localServer = new WebViewLocalServer(context, this, injector, authorities, html5mode, jsProfilingEnabled);
+         localServer.hostAssets(DEFAULT_WEB_ASSET_DIR);
+ 
+         Logger.debug("Loading app at " + appUrl);
+diff --git a/capacitor/src/main/java/com/getcapacitor/CapConfig.java b/capacitor/src/main/java/com/getcapacitor/CapConfig.java
+index b20799ba..99e33b97 100644
+--- a/capacitor/src/main/java/com/getcapacitor/CapConfig.java
++++ b/capacitor/src/main/java/com/getcapacitor/CapConfig.java
+@@ -54,6 +54,7 @@ public class CapConfig {
+     private String errorPath;
+     private boolean zoomableWebView = false;
+     private boolean resolveServiceWorkerRequests = true;
++    private boolean jsProfilingEnabled = false;
+ 
+     // Embedded
+     private String startPath;
+@@ -181,6 +182,7 @@ public class CapConfig {
+         this.errorPath = builder.errorPath;
+         this.zoomableWebView = builder.zoomableWebView;
+         this.resolveServiceWorkerRequests = builder.resolveServiceWorkerRequests;
++        this.jsProfilingEnabled = builder.jsProfilingEnabled;
+ 
+         // Embedded
+         this.startPath = builder.startPath;
+@@ -286,6 +288,7 @@ public class CapConfig {
+         webContentsDebuggingEnabled = JSONUtils.getBoolean(configJSON, "android.webContentsDebuggingEnabled", isDebug);
+         zoomableWebView = JSONUtils.getBoolean(configJSON, "android.zoomEnabled", JSONUtils.getBoolean(configJSON, "zoomEnabled", false));
+         resolveServiceWorkerRequests = JSONUtils.getBoolean(configJSON, "android.resolveServiceWorkerRequests", true);
++        jsProfilingEnabled = JSONUtils.getBoolean(configJSON, "android.jsProfilingEnabled", false);
+ 
+         String logBehavior = JSONUtils.getString(
+             configJSON,
+@@ -382,6 +385,10 @@ public class CapConfig {
+         return resolveServiceWorkerRequests;
+     }
+ 
++    public boolean isJsProfilingEnabled() {
++        return jsProfilingEnabled;
++    }
++
+     public boolean isWebContentsDebuggingEnabled() {
+         return webContentsDebuggingEnabled;
+     }
+@@ -582,6 +589,7 @@ public class CapConfig {
+         private int minHuaweiWebViewVersion = DEFAULT_HUAWEI_WEBVIEW_VERSION;
+         private boolean zoomableWebView = false;
+         private boolean resolveServiceWorkerRequests = true;
++        private boolean jsProfilingEnabled = false;
+ 
+         // Embedded
+         private String startPath = null;
+@@ -686,6 +694,11 @@ public class CapConfig {
+             return this;
+         }
+ 
++        public Builder setJsProfilingEnabled(boolean jsProfilingEnabled) {
++            this.jsProfilingEnabled = jsProfilingEnabled;
++            return this;
++        }
++
+         public Builder setWebContentsDebuggingEnabled(boolean webContentsDebuggingEnabled) {
+             this.webContentsDebuggingEnabled = webContentsDebuggingEnabled;
+             return this;
+diff --git a/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java b/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
+index a044bfbe..a4600ace 100755
+--- a/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
++++ b/capacitor/src/main/java/com/getcapacitor/WebViewLocalServer.java
+@@ -63,6 +63,7 @@ public class WebViewLocalServer {
+     private final boolean html5mode;
+     private final JSInjector jsInjector;
+     private final Bridge bridge;
++    private final boolean jsProfilingEnabled;
+ 
+     /**
+      * A handler that produces responses for paths on the virtual asset server.
+@@ -133,13 +134,14 @@ public class WebViewLocalServer {
+         }
+     }
+ 
+-    WebViewLocalServer(Context context, Bridge bridge, JSInjector jsInjector, ArrayList<String> authorities, boolean html5mode) {
++    WebViewLocalServer(Context context, Bridge bridge, JSInjector jsInjector, ArrayList<String> authorities, boolean html5mode, boolean jsProfilingEnabled) {
+         uriMatcher = new UriMatcher(null);
+         this.html5mode = html5mode;
+         this.protocolHandler = new AndroidProtocolHandler(context.getApplicationContext());
+         this.authorities = authorities;
+         this.bridge = bridge;
+         this.jsInjector = jsInjector;
++        this.jsProfilingEnabled = jsProfilingEnabled;
+     }
+ 
+     private static Uri parseAndVerifyUrl(String url) {
+@@ -619,7 +621,13 @@ public class WebViewLocalServer {
+             throw new IllegalArgumentException("assetPath cannot contain the '*' character.");
+         }
+ 
+-        PathHandler handler = new PathHandler() {
++        Map<String, String> customHeaders = null;
++        if (jsProfilingEnabled) {
++            customHeaders = new HashMap<>();
++            customHeaders.put("Document-Policy", "js-profiling");
++        }
++
++        PathHandler handler = new PathHandler(null, null, 200, "OK", customHeaders) {
+             @Override
+             public InputStream handle(Uri url) {
+                 InputStream stream = null;
