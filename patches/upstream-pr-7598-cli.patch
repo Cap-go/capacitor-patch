@@ -1,0 +1,15 @@
+diff --git a/dist/common.js b/dist/common.js
+index 8813d61..1597e5e 100644
+--- a/dist/common.js
++++ b/dist/common.js
+@@ -429,7 +429,9 @@ async function checkJDKMajorVersion() {
+ }
+ exports.checkJDKMajorVersion = checkJDKMajorVersion;
+ function parseApkNameFromFlavor(flavor) {
+-    const convertedName = flavor.replace(/([A-Z])/g, '$1').toLowerCase();
++    let convertedName = flavor.replace(/([A-Z])/g, '-$1').toLowerCase();
++    if (convertedName.startsWith('-'))
++        convertedName = convertedName.replace('-', '');
+     return `app-${convertedName ? `${convertedName}-` : ''}debug.apk`;
+ }
+ exports.parseApkNameFromFlavor = parseApkNameFromFlavor;
